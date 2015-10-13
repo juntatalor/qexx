@@ -1,0 +1,22 @@
+{% load widget_tweaks %}
+{% if success %}
+    <h4 class="text-success">Спасибо за ваш отзыв! Мы опубликуем его, как только он пройдет модерацию</h4>
+{% else %}
+    <form method="post" id="rating-form">
+        {% for field in rating_form.hidden_fields %}
+            {{ field }}
+        {% endfor %}
+        {% for field in rating_form.visible_fields %}
+            <div class="form-group{% if field.errors %} has-error{% endif %}{% if field.field.required %} required{% endif %}">
+                <label for="{{ field.id_for_label }}" class="control-label">{{ field.label }}</label>
+                {% render_field field class+="form-control" %}
+                {% for error in field.errors %}
+                    <span class="help-block">{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-default">Оставить отзыв</button>
+
+    </form>
+{% endif %}

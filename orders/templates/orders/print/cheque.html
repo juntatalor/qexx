@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>
+        Чек для заказа № {{ order.id }}
+    </title>
+</head>
+
+<body>
+<div style="clear: both">
+    <h3 align="center">Товарный чек</h3>
+</div>
+<div style="clear: both">
+    <div style="float: left; width: 50%; font-size: 10pt">
+        <p><b>Дата заказа: </b> {{ order.date }}</p>
+
+        <p><b>Номер заказа: </b> {{ order.id }}</p>
+
+        <p><b>Метод оплаты: </b> {{ payment_method.name }}</p>
+    </div>
+    <div style="float: left; width: 50%; font-size: 10pt">
+        <p><b>Покупатель: </b>{{ order.contact_person }}</p>
+
+        <p><b>Контактный телефон: </b> {{ order.phone }}</p>
+        {% if order.shipping_address %} <p><b>Адрес доставки: </b>{{ order.shipping_address }}</p> {% endif %}
+    </div>
+</div>
+<div>
+    <table style="width: 100%; border-spacing: 0 ;font-size: 12pt">
+        <tr style="height: 50px">
+            <td style="width: 50%; border-bottom: 2px black solid; border-top: 2px black solid">
+                <b>Товар</b>
+            </td>
+            <td style="width: 20%; border-bottom: 2px black solid; border-top: 2px black solid">
+                <b>Количество</b>
+            </td>
+            <td style="width: 30%; border-bottom: 2px black solid; border-top: 2px black solid">
+                <b>Цена</b>
+            </td>
+        </tr>
+        {% for order_product in order.order_products.all %}
+            <tr>
+                <td style="border-bottom: 1px black solid; width: 50%">
+                    {{ order_product.priced_product }}
+                    <p style="font-size: 10pt"> Артикул: {{ order_product.priced_product.product.sku }}</p>
+                </td>
+                <td style="width: 20%; border-bottom: 1px black solid">
+                    {{ order_product.amount }} {{ order_product.priced_product.product.unit }}
+                </td>
+                <td style="width: 30%; border-bottom: 1px black solid">
+                    {{ order_product.price }} {{ order.currency }}
+                </td>
+            </tr>
+        {% endfor %}
+
+        <tr style="height: 50px">
+            <td style="width: 50%; border-top: 2px black solid; border-bottom: 2px black solid">
+                <b>Общая стоимость товаров:</b>
+            </td>
+            <td style="width: 20%; border-top: 2px black solid; border-bottom: 2px black solid">
+            </td>
+            <td style="width: 30%; border-top: 2px black solid; border-bottom: 2px black solid">
+                {{ order.get_order_summary.price|floatformat:2 }} {{ order.currency }}
+            </td>
+        </tr>
+        {% if order.discount %}
+            <tr style="height: 50px">
+                <td style="width: 50%; border-bottom: 1px black solid">
+                    <b>Скидка:</b>
+                </td>
+                <td style="width: 20%; border-bottom: 1px black solid">
+                </td>
+                <td style="width: 30%; border-bottom: 1px black solid">
+                    {{ order.discount }} {{ order.currency }}
+                </td>
+            </tr>
+        {% endif %}
+        {% if order.shipping_address %}
+            <tr style="height: 50px">
+                <td style="width: 50%">
+                    <b>Доставка:</b>
+                </td>
+                <td style="width: 20%">
+                </td>
+                <td style="width: 30%">
+                    {{ order.shipping_price }} {{ order.currency }} <br>
+                    {{ shipping_method.name }}
+                </td>
+            </tr>
+        {% endif %}
+        {% if order.shipping_address or order.discount %}
+            <tr style="height: 50px">
+                <td style="width: 50%; border-top: 2px black solid; border-bottom: 2px black solid">
+                    <b>Итоговая сумма по заказу:</b>
+                </td>
+                <td style="width: 20%; border-top: 2px black solid; border-bottom: 2px black solid">
+                </td>
+                <td style="width: 30%; border-top: 2px black solid; border-bottom: 2px black solid">
+                    {{ order.get_total_price|floatformat:2 }} {{ order.currency }}
+                </td>
+            </tr>
+        {% endif %}
+
+    </table>
+    <div style="float: left; width: 100%; font-size: 10pt">
+        <br><b>Магазин Ardushop</b>
+
+        <br>Склад самовывоза: г. Москва, Миусская пл., д. 9 (проходная РХТУ им. Д.И. Менделеева)
+        <br>Юридический адрес: 117623, г. Москва, ул. 2-я Мелитопольская,д. 21, к. 3, оф. 143
+        <br>ОГРН 1147746260870
+
+        <br>ИНН 7727829241
+    </div>
+</div>
+
+</body>
+
+</html>

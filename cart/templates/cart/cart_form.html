@@ -1,0 +1,15 @@
+<div class="container-fluid">
+    {% if cart_items %}
+        <div class="row">
+            {% include 'cart/cart_items.html' with cart_items=cart_items amount_template='cart/cart_amount.html' %}
+        </div>
+        <div class="row">
+            <p>
+                <a id="cart-update" class="btn btn-default btn-ajax" role="button">Обновить корзину</a>
+                <input type="submit" class="btn btn-success" value="Оформить заказ">
+            </p>
+        </div>
+    {% else %}
+        {% include 'cart/empty_cart.html' %}
+    {% endif %}
+</div>

@@ -1,0 +1,11 @@
+django >= 1.8.2
+django-mptt >= 0.7.3
+django-widget-tweaks
+django-mathfilters
+unidecode
+django-autoslug >= 1.8.0
+pillow
+easy-thumbnails
+phonenumbers
+django-haystack
+django-autocomplete-light>=2.1.1

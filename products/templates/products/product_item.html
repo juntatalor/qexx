@@ -1,0 +1,25 @@
+{% load staticfiles %}
+{% load thumbnail %}
+{% block item_content %}
+    <a class="thumbnail" href="{% url 'products:detail' product.slug %}"><img
+            class="img-responsive" src="{{ product.main_image|thumbnail_url:'product_preview' }}"></a>
+    <p><a href="{% url 'products:detail' product.slug %}">{{ product.name }}</a></p>
+    <p>
+        {% if product.min_price == product.max_price %}
+            {{ product.min_price|floatformat:2 }} {{ currency }}
+        {% else %}
+            {{ product.min_price|floatformat:2 }}-{{ product.max_price|floatformat:2 }} {{ currency }}
+        {% endif %}
+        {% comment %}
+                Наличие на складе и кнопка "добавить в корзину"
+                Только для невариативных товаров
+        {% endcomment %}
+        {% if product.type == product.TYPE_COMMON %}
+            {% include 'stock/amout_sign.html' with product=product %}
+            {% include 'cart/cart_add.html' with product_data=product.prices.all.0 class='btn btn-default btn-xs' role='button' link_text='<span class="fa fa-cart-plus fa-lg"></span>' %}
+        {% endif %}
+    </p>
+    {% if item.product.description_short %}
+        <p><em>{{ item.product.description_short|safe }}</em></p>
+    {% endif %}
+{% endblock %}

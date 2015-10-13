@@ -1,0 +1,16 @@
+{% comment %}
+    Отображение количества товаров в виде значка (в списке)
+{% endcomment %}
+{% if product.stock_track == product.STOCK_AVAILABLE and product.stock_amount > 0 %}
+    <span title="В наличии" class="text-success fa fa-align-justify fa-lg"></span>
+{% elif product.stock_track == product.STOCK_EXACT and product.stock_amount > 0 %}
+    <span title="В наличии" class="text-success fa fa-align-justify fa-lg"></span>
+{% elif product.stock_track == product.STOCK_LOW_BALANCE and product.stock_amount > 0 %}
+    {% if product.stock_amount <= product.low_balance %}
+        <span title="В наличии всего {{ product.stock_amount }} {{ product.unit }}" class="text-warning fa fa-align-justify fa-lg"></span>
+    {% else %}
+        <span title="В наличии" class="text-success fa fa-align-justify fa-lg"></span>
+    {% endif %}
+{% elif product.stock_track != product.STOCK_DO_NOT_SHOW %}
+    <span title="Не в наличии" class="text-danger fa fa-align-justify fa-lg"></span>
+{% endif %}

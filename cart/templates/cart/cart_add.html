@@ -1,0 +1,8 @@
+{% comment %}
+    Шаблон для добавления товара в корзину с формы товара
+{% endcomment %}
+{% if show_amount %}
+    <input class="cart-product-amount" id="product-amount" type="number" min="1" max="{{ product_data.stock_amount }}"
+           value="1" title="Количество">
+{% endif %}
+<a tabindex="0" id="cart-add-{{ product_data.id }}" class="cart-add {{ class }}" role="{{ role }}" data-product="{{ product_data.id }}">{{ link_text }}</a>

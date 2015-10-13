@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}
+    Популярные товары {{ block.super }}
+{% endblock %}
+{% block content %}
+    <h3>Популярные товары</h3>
+    <div class="container-fluid">
+        {% if products %}
+            {% include 'products/items_grid.html' with items=products per_row=4 %}
+        {% else %}
+            <div class="row">
+                <p>Сейчас у нас нету популярных товаров.</p>
+
+                <p>Загляните позднее, и они обязательно появятся.</p>
+            </div>
+        {% endif %}
+        <div class="row">
+            {% include 'products/pagination.html' with items=products range=range %}
+        </div>
+    </div>
+{% endblock %}
+

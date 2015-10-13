@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head lang="ru">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<h3>Спасибо за регистрацию!</h3>
+
+<p>Ваше имя пользователя: {{ username }}</p>
+
+<p>Ваш пароль: {{ password }}</p>
+
+<p>Для активации аккаунта <a href="localhost:8000/accounts/confirm?email_token={{ email_token }}">нажмите сюда.</a></p>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{% load ratings_extras %}
+{% get_ratings product as product_ratings %}
+{% get_ratings_form product as rating_form %}
+{% if user.is_authenticated %}
+    <div id="rating-add">
+        {% include 'ratings/rating_form.html' %}
+    </div>
+{% else %}
+    <p>Вы можете оставить отзыв <a href="{% url 'accounts:login' %}">войдя в систему</a> или <a
+            href="{% url 'accounts:signup' %}">зарегистрировавшись</a></p>
+{% endif %}
+{% for product_rating in product_ratings %}
+    <div class="media">
+        <div class="media-left">
+            {{ product_rating.user }}
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading">Рейтинг: {{ product_rating.rating }}</h4>
+            {{ product_rating.comment }}
+        </div>
+    </div>
+{% empty %}
+    <p>Отзывов пока никто не оставил</p>
+{% endfor %}

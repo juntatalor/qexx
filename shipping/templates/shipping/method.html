@@ -1,0 +1,11 @@
+{{ label }}
+<p class="help-block">{{ method.help_text|safe }}</p>
+{% with price=method.get_price %}
+    <p>Стоимость:
+    {% if price == 0 %}
+        <strong>Бесплатно</strong>
+    {% else %}
+        <strong>{{ price|floatformat:2 }} {{ method.cart.currency }}</strong>
+    {% endif %}
+    </p>
+{% endwith %}

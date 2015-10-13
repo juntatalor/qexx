@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load mathfilters %}
+{% block title %}
+    {{ product }} {{ block.super }}
+{% endblock %}
+{% block css %}
+    {{ block.super }}
+    <link href="{% static "qexx/css/colorbox.css" %}" rel="stylesheet">
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+    <script src="{% static "qexx/js/csrf.js" %}" type="text/javascript"></script>
+    <script src="{% static "cart/js/cart_add.js" %}" type="text/javascript"></script>
+    <script src="{% static "jquery-colorbox/jquery.colorbox-min.js" %}" type="text/javascript"></script>
+    <script src="{% static "ratings/js/rating_add.js" %}" type="text/javascript"></script>
+    {% comment %}
+        Скрипт, для активации галереи
+    {% endcomment %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.product-gallery').colorbox({
+                rel: 'product-gallery',
+                maxWidth: '90%', maxHeight: '90%', scalePhotos: true,
+                current: "Изображение {current} из {total}"
+            });
+        })
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            {% include 'products/breadcrumbs.html' with category=product.categories.all.0 %}
+        </div>
+        <!-- /.breadcrumbs -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="container-fluid">
+                    <div class="row">
+                        <a class="thumbnail product-gallery" href="{{ MEDIA_URL }}{{ product.main_image }}"><img
+                                class="img-responsive"
+                                src="{{ product.main_image|thumbnail_url:'product_preview_main' }} "></a>
+                    </div>
+                    <div class="row">
+                        {% for product_image in product.images.all %}
+                            <div class="col-md-6">
+                                <a class="thumbnail product-gallery" href="{{ MEDIA_URL }}{{ product_image.path }}"><img
+                                        class="img-responsive"
+                                        src="{{ product_image.path|thumbnail_url:'product_preview_small' }} "></a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <!-- /.images -->
+            <div class="col-md-8">
+                {% csrf_token %}
+                <h4>{{ product.name }}</h4>
+
+                {% if product_price.min_price == product_price.max_price %}
+                    <p id="product-price">{{ product_price.min_price|floatformat:2 }} {{ product_price.currency }}</p>
+                {% else %}
+                    <p id="product-price">{{ product_price.min_price|floatformat:2 }}-{{ product_price.max_price|floatformat:2 }} {{ product_price.currency }}</p>
+                {% endif %}
+
+                {% if product.type == product.TYPE_COMMON %}
+                    {% include 'stock/amount_text.html' with amount=product_data.stock_amount %}
+                    {% if product_data.stock_amount > 0 %}
+                        <p>{% include 'cart/cart_add.html' with product_data=product_data show_amount=True class='btn btn-success' role='button' link_text='Добавить в корзину' %}</p>
+                    {% endif %}
+                {% elif product.type == product.TYPE_VARIATIVE %}
+                    <p><select id="variation-select" class="form-control">
+                        <option value="" selected="selected">Выберите тип товара</option>
+                        {% for product_variation in product_data %}
+                            <option value="{{ product_variation.id }}"
+                                    data-amount="{{ product_variation.stock_amount }}"
+                                    data-price="{{ product_variation.price }}"
+                                    data-currency="{{ product_variation.currency }}">
+                                {{ product_variation.variation_value }}
+                            </option>
+                        {% endfor %}
+                    </select></p>
+                    {% for product_variation in product_data %}
+                        <div class="variation-amount" id="amount-{{ product_variation.id }}" style="display: none;">
+                            {% include 'stock/amount_text.html' with amount=product_variation.stock_amount %}
+                        </div>
+                    {% endfor %}
+                    <div id="cart-add" style="display: none">
+                        <p>{% include 'cart/cart_add.html' with show_amount=True class='btn btn-success' role='button' link_text='Добавить в корзину' %}</p>
+                    </div>
+                {% endif %}
+
+                <p>{{ product.description|safe }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#description" role="tab" data-toggle="tab">Описание</a>
+                </li>
+                <li role="presentation"><a href="#ratings" role="tab" data-toggle="tab">Отзывы</a></li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade active in" id="description">
+                    {{ product.description_full|safe }}
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="ratings">
+                    {% include 'ratings/product_ratings.html' %}
+                </div>
+            </div>
+        </div>
+        <!-- ./description, ./ratings -->
+        {% if related_products %}
+            <div class="row">
+                <h3>Вас также могут заинтересовать:</h3>
+                {% include 'products/items_grid.html' with items=related_products per_row=3 %}
+            </div>
+        {% endif %}
+        <!-- ./related_products -->
+    </div>
+{% endblock %}

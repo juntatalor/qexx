@@ -1,0 +1,9 @@
+<ol class="breadcrumb">
+    <li><a href="{% url 'products:index' %}">Товары</a></li>
+    {% for parent in category.get_ancestors %}
+        <li><a href="{% url 'products:category' parent.slug %}">{{ parent.name }}</a></li>
+    {% endfor %}
+    {% if category %}
+        <li><a href="{% url 'products:category' category.slug %}">{{ category.name }}</a></li>
+    {% endif %}
+</ol>

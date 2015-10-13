@@ -1,0 +1,31 @@
+# Compiled Python files
+*.pyc
+
+# Python cache files
+__pycache__/
+
+# Project DB
+db.sqlite3
+
+# Static vendor files
+/static/*
+!/static/qexx
+
+# Media files
+/media/*
+!/media/qexx
+Thumbs.db
+
+# Production binary & static
+/bin/
+/lib/
+.htpasswd
+/include/
+pip-selfcheck.json
+/static_production/
+
+# Pycharm files
+.idea
+
+# Compiled translation files
+*.mo

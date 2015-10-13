@@ -1,0 +1,17 @@
+<p>
+    {% for coupon in cart_coupons %}
+        {{ coupon }}
+        <a class="btn btn-xs btn-link">
+            <span class="fa fa-remove coupon-remove" data-coupon="{{ coupon.code }}"></span>
+        </a>
+    {% endfor %}
+</p>
+
+<form id="coupons-form" class="form-inline">
+    <div class="form-group">
+        <label class="control-label" for="id-coupon">Код купона</label>
+        <input class="form-control" type="text" id="id-coupon" maxlength="30">
+    </div>
+
+    <input id="coupon-add" type="submit" class="btn btn-success" value="Добавить купон">
+</form>

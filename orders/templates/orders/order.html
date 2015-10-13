@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load mathfilters %}
+{% block title %}
+    Заказ № {{ order.id }} {{ block.super }}
+{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        {% if new_order %}
+            <div class="row">
+                <h3>Спасибо за заказ!</h3>
+
+                <p>Ваш заказ в настоящее время обрабатывается. Наши менеджеры свяжутся с вами в ближайшее время.</p>
+
+                <p>Вы можете следить за заказом по <a
+                        href="{% url 'orders:direct_view' order.uid %}">ссылке</a></p>
+
+                <p>Также, мы отправили информацию о заказе на указанный вами электронный адрес</p>
+            </div>
+        {% endif %}
+        <div class="row">
+            <h4>Заказ № {{ order.id }}</h4>
+
+            <p>Статус заказа: {{ order.get_order_status_display }}</p>
+
+            <p>Метод оплаты: {{ payment_method }}</p>
+
+            <p>Статус оплаты: {{ order.get_payment_status_display }}</p>
+
+            {% if payment_url %}
+                <p><a href="{{ payment_url }}" class="btn btn-success">Оплатить заказ</a></p>
+            {% endif %}
+
+            {% if order.user == user %}
+                {% if order.shipping_address %}
+                    <p>Адрес доставки: {{ order.shipping_address }}</p>
+                {% endif %}
+                <p>Телефон: {{ order.phone }}</p>
+                <p>Контактное лицо: {{ order.contact_person }}</p>
+            {% elif order.user %}
+                <p>Чтобы увидеть подробную информацию,
+                    <a href="{% url 'accounts:login' %}?next={% url 'orders:direct_view' order.uid %}">войдите в
+                        систему</a>
+                </p>
+            {% endif %}
+        </div>
+        <div class="row">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th class="col-md-1">№</th>
+                    <th class="col-md-5">Продукт</th>
+                    <th class="col-md-2">Количество</th>
+                    <th class="col-md-2 text-right">Цена</th>
+                    <th class="col-md-2 text-right">Сумма</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order_product in order_products %}
+                    <tr>
+                        <th>{{ forloop.counter }}</th>
+                        <td>
+                            <a href="{% url 'products:detail' order_product.priced_product.product.slug %}">{{ order_product.priced_product }}</a>
+                        </td>
+                        <td class="col-md-2">
+                            {{ order_product.amount }} {{ order_product.priced_product.product.unit }}
+                        </td>
+                        <td class="text-right">
+                            {{ order_product.price|floatformat:2 }} {{ order.currency }}
+                        </td>
+                        <td class="text-right">
+                            {{ order_product.price|mul:order_product.amount|floatformat:2 }} {{ order.currency }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td></td>
+                    <td>
+                        {% if order.shipping_price %}
+                            <strong>Стоимость товаров:</strong>
+                        {% else %}
+                            <strong>Итого:</strong>
+                        {% endif %}
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-right">
+                        <strong>{{ order.get_order_summary.price|floatformat:2 }} {{ order.currency }}</strong>
+                    </td>
+                </tr>
+                {% if order.shipping_price %}
+                    <tr>
+                        <td></td>
+                        <td><strong>Стоимость доставки:</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">
+                            <strong>{{ order.shipping_price|floatformat:2 }} {{ order.currency }}</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><strong>Итого:</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right">
+                            <strong>{{ order.get_total_price|floatformat:2 }} {{ order.currency }}</strong>
+                        </td>
+                    </tr>
+                {% endif %}
+                </tfoot>
+            </table>
+
+            <p>Метод доставки: {{ shipping_method }}</p>
+
+        </div>
+    </div>
+{% endblock %}

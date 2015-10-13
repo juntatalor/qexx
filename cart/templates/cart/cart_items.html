@@ -1,0 +1,44 @@
+{% load mathfilters %}
+{% load thumbnail %}
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th class="col-md-1">№</th>
+        <th></th>
+        <th class="col-md-5">Продукт</th>
+        <th class="col-md-2">Количество</th>
+        <th class="col-md-2 text-right">Цена</th>
+        <th class="col-md-2 text-right">Сумма</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for cart_item in cart_items %}
+        <tr>
+            <th>{{ forloop.counter }}</th>
+            <td><img src="{{ cart_item.priced_product.product.main_image|thumbnail_url:'product_preview_small' }}"></td>
+            <td>
+                <a href="{% url 'products:detail' cart_item.priced_product.product.slug %}">{{ cart_item.priced_product }}</a>
+            </td>
+            <td class="col-md-2">
+                {% include amount_template with cart_item=cart_item %}
+            </td>
+            <td class="text-right">
+                {{ cart_item.priced_product.price|floatformat:2 }} {{ cart.currency }}
+            </td>
+            <td class="text-right">
+                {{ cart_item.priced_product.price|mul:cart_item.amount|floatformat:2 }} {{ cart.currency }}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+    <tr>
+        <td></td>
+        <td></td>
+        <td><strong>Итого в корзине:</strong></td>
+        <td></td>
+        <td></td>
+        <td class="text-right"><strong>{{ cart_summary.cart_price|floatformat:2 }} {{ cart.currency }}</strong></td>
+    </tr>
+    </tfoot>
+</table>

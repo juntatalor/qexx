@@ -1,0 +1,12 @@
+<input class="cart-product-amount" type="number" title="Количество"
+       name="cart-product-amount{{ cart_item.priced_product.id }}"
+       value="{{ cart_item.amount }}"
+       data-product-id="{{ cart_item.priced_product.id }}"
+       min="1"
+       max="{{ cart_item.stock_amount }}">
+<a class="btn btn-xs btn-link" data-toggle="modal" data-target="#confirmModal"
+   data-product-id="{{ cart_item.priced_product.id }}"
+   data-product-href="{% url 'products:detail' cart_item.priced_product.product.slug %}"
+   data-product-name="{{ cart_item.priced_product }}">
+    <span class="fa fa-remove text-danger"></span>
+</a>

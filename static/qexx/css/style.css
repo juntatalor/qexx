@@ -1,0 +1,116 @@
+/*!
+ * Основной css-файл
+ */
+
+html {
+  position: relative;
+  height: 100%;
+}
+
+body {
+    height: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    overflow-y: scroll;
+    background-image: url('/media/qexx/images/back.jpg') ;
+    background-repeat: repeat;
+    background-position: top center;
+    background-attachment: fixed;
+}
+
+/*!
+ * Границы таблиц
+ */
+
+.table>thead>tr>th,
+.table>tbody>tr>th,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>tbody>tr>td,
+.table>tfoot>tr>td {
+    border-top: 1px solid #c0c0c0;
+}
+
+hr {
+    border-top-color: #c0c0c0;
+}
+
+.panel-body {
+  background-color: whitesmoke;
+}
+
+.panel-default>.panel-heading {
+  background-color: #B9B7D2;
+}
+
+/*!
+ * Фоновый цвет страниц
+ */
+
+.container {
+    background-color: #e6e6e6;
+}
+
+.container-body {
+    padding-top: 10px;
+    min-height: 100%;
+}
+
+footer {
+    height: 50px;
+}
+
+/*!
+ * Фикс для табов
+ */
+
+.nav-tabs>li.active>a,
+.nav-tabs>li.active>a:hover,
+.nav-tabs>li.active>a:focus {
+    background-color: #e6e6e6;
+}
+
+/*
+ * Отметка обязательных полей красной звездочкой (*)
+ */
+
+.form-group.required .control-label:after {
+  content: "*";
+  color: #d00;
+  margin-left: 3px;
+}
+
+.has-error .radio p.help-block {
+    color: #737373;
+}
+
+/*!
+ * Корзина
+ */
+
+.cart-product-amount {
+    width: 50px;
+}
+
+/*!
+ * Для радио-кнопок, которые формирует django
+ */
+
+.radio ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+/*!
+ * Для описания товаров и отзывов
+ */
+
+.nav-tabs {
+    margin-bottom: 15px;
+}
+
+.btn-ajax {
+    position: relative;
+    padding-left: 25px;
+    padding-right: 25px;
+}

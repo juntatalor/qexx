@@ -1,0 +1,26 @@
+<ul class="nav navbar-nav navbar-right">
+    {% if user.is_authenticated %}
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown">
+                {{ user }}
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'accounts:profile' %}"><span class="fa fa-user"></span> Профиль</a></li>
+                <li><a href="{% url 'orders:index' %}"><span class="fa fa-info-circle"></span> Заказы</a></li>
+                {% if user.is_staff %}
+                    <li>
+                        <a href="{% url THEME_ADMIN_URL|default:"admin:index" %}"><span class="fa fa-cog"></span> Администрирование</a>
+                    </li>
+                {% endif %}
+                <li class="divider"></li>
+                <li>
+                    <a id="account_logout" href="{% url 'accounts:logout' %}"><span class="fa fa-power-off"></span> Выйти</a>
+                </li>
+            </ul>
+        </li>
+    {% else %}
+        <li><a href="{% url 'accounts:login' %}"><span class="fa fa-sign-in fa-lg"></span> Войти</a></li>
+        <li><a href="{% url 'accounts:signup' %}"><span class="fa fa-check-circle fa-lg"></span> Регистрация</a></li>
+    {% endif %}
+</ul>

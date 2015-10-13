@@ -1,0 +1,70 @@
+{% load staticfiles %}
+{% load yandex_metrika %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>
+        {% block title %}| {{ site.name }}{% endblock %}
+    </title>
+    {% block css %}
+        <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+        <link href="{% static "qexx/css/style.css" %}" rel="stylesheet">
+        <link href="{% static "font-awesome/css/font-awesome.min.css" %}" rel="stylesheet">
+    {% endblock %}
+</head>
+
+<body>
+<div class="container container-body">
+
+    {% block header %}
+        <div class="row">
+            <div class="col-md-9">
+                <h2>{{ site.name }}</h2>
+
+                <p>{{ detailed_site.description }}</p>
+            </div>
+            <div class="col-md-3">
+                <h4 class="text-right">{{ detailed_site.phone }}</h4>
+
+                <p class="text-right text-muted">{{ detailed_site.email }}</p>
+
+                <p class="text-right text-muted">{{ detailed_site.address }}</p>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block navbar %}
+        {% include 'navbar.html' %}
+    {% endblock %}
+
+    <div class="row">
+        {% block left_column %}
+            <div class="col-md-3">
+                {% include 'search/search_widget.html' %}
+                <hr>
+                {% include 'products/category_index.html' %}
+            </div>
+        {% endblock %}
+        {% block right_column %}
+        <div class="col-md-9">
+            {% block content %}{% endblock content %}
+        </div>
+        {% endblock right_column %}
+    </div>
+
+</div>
+
+{% include 'footer.html' %}
+
+
+</body>
+
+{% block js %}
+    <script src="{% static "jquery/jquery.min.js" %}" type="text/javascript"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+{% endblock %}
+{% yandex_metrika 12345678 %}
+</html>

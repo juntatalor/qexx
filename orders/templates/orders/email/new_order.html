@@ -1,0 +1,37 @@
+{% load mathfilters %}
+<!DOCTYPE html>
+<html>
+<head lang="ru">
+    <meta charset="UTF-8">
+</head>
+<body>
+<p>Мы получили ваш заказ. Наши менеджеры свяжутся с вами в ближайшее время для уточнения деталей</p>
+
+<h3>Детали вашего заказа:</h3>
+<p>Метод доставки: {{ shipping_method }}</p>
+<p>Метод оплаты: {{ payment_method }}</p>
+<p>Телефон: {{ order.phone }}</p>
+<p>Контактное лицо: {{ order.contact_person }}</p>
+<p>Адрес доставки: {{ order.address|default:'Не указан' }}</p>
+<table>
+    <tbody>
+    {% for item in order.order_products.all %}
+        <tr>
+            <th>{{ forloop.counter }}</th>
+            <td>{{ item.product }}</td>
+            <td>{{ item.amount }}</td>
+            <td>{{ item.price }} {{ order.currency }}</td>
+            <td>{{ item.price|mul:item.amount }} {{ order.currency }}</td>
+        </tr>
+    {% endfor %}
+    <tr>
+        <td>Итого:</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>{{ order.get_order_summary.price|floatformat:2 }} {{ order.currency }}</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

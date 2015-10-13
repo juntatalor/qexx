@@ -1,0 +1,12 @@
+{% load coupons_extras %}
+{% get_coupons as cart_coupons %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <a data-toggle="collapse" href="#coupons-collapse">У вас есть купон?</a>
+    </div>
+    <div id="coupons-collapse" class="panel-collapse collapse{% if cart_coupons %} in{% endif %}" role="tabpanel">
+        <div class="panel-body" id="coupons">
+            {% include 'coupons/cart_coupons_form.html' %}
+        </div>
+    </div>
+</div>

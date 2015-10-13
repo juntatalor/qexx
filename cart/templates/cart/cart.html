@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% comment %}
+    Основной шаблон корзины (/cart/)
+{% endcomment %}
+{% load staticfiles %}
+{% block title %}
+    Корзина {{ block.super }}
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'qexx/js/csrf.js' %}" type="text/javascript"></script>
+    <script src="{% static 'cart/js/cart.js' %}" type="text/javascript"></script>
+    <script src="{% static 'spin/js/spin.min.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <h4>Корзина</h4>
+    <form method="post" action="{% url 'cart:view' %}">
+        {% csrf_token %}
+        <div id="cart-items">
+            {% include 'cart/cart_form.html' %}
+        </div>
+    </form>
+    <!-- Модальное окно для подтверждения удаления -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    Вы действительно хотите удалить из корзины <a id="product-link" href=""></a>?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Нет</button>
+                    <button id="modalOK" type="button" class="btn btn-primary btn-ajax">Да</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

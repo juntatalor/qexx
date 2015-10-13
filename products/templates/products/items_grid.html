@@ -1,0 +1,17 @@
+{% load mathfilters %}
+{% csrf_token %}
+{% for product in items %}
+    {% if forloop.counter|mod:per_row == 1 or forloop.first %}
+        <div class="row">
+    {% endif %}
+<div class="col-md-{{ 12|div:per_row|floatformat:"0" }}">
+    {% if is_search %}
+        {% include 'products/product_item.html' with product=product.object %}
+    {% else %}
+        {% include 'products/product_item.html' %}
+    {% endif %}
+</div>
+{% if forloop.counter|mod:per_row == 0 or forloop.last %}
+    </div>
+{% endif %}
+{% endfor %}

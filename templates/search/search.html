@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Результаты поиска {{ block.super }}
+{% endblock %}
+
+{% block content %}
+
+    <h3>Результаты поиска</h3>
+
+    {% if page.object_list %}
+        {% include 'products/items_grid.html' with items=page.object_list per_row=4 is_search=True %}
+    {% else %}
+        <p>К сожалению, по вашему запросу ничего не найдено</p>
+    {% endif %}
+
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script src="{% static "qexx/js/csrf.js" %}" type="text/javascript"></script>
+    <script src="{% static "cart/js/cart_add.js" %}" type="text/javascript"></script>
+{% endblock %}

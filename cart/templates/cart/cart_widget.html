@@ -1,0 +1,19 @@
+{% load extra_pluralize %}
+{% if user_cart %}
+    {% with cart_summary=user_cart.get_cart_summary %}
+        {% if cart_summary.amount%}
+            <a href="{% url 'cart:view' %}">
+                <span class="fa fa-shopping-cart fa-lg"></span> {{ cart_summary.amount }} {% extra_pluralize товар товара товаров cart_summary.amount %}
+                - {{ cart_summary.cart_price|floatformat:2 }} {{ user_cart.currency }}
+            </a>
+        {% else %}
+            <a href="{% url 'cart:view' %}">
+                <span class="fa fa-shopping-cart fa-lg"></span> Корзина пуста
+            </a>
+        {% endif %}
+    {% endwith %}
+{% else %}
+    <a href="{% url 'cart:view' %}">
+        <span class="fa fa-shopping-cart fa-lg"></span> Корзина пуста
+    </a>
+{% endif %}

@@ -1,0 +1,20 @@
+#FIXTURES:
+
+Залить дамп базы:
+Linux:
+python manage.py loaddata <APPNAME>/fixtures/initial_data.json
+Windows:
+python manage.py loaddata <APPNAME>\fixtures\initial_data.json
+
+Слить дамп базы:
+python3 manage.py dumpdata --format=json shipping > <APPNAME>/fixtures/initial_data.json
+
+Если фикстуры сохраняются в файл с названием initial_data, то при каждом syncdb фикстуры будут загружаться в базу данных проекта.
+
+# Static
+jquery 2.1.4
+font awesome 4.3.0
+# ToDo: в продакшн следует скомпилировать бутстрап без лишних зависимостей
+bootstrap 3.3.4
+jquery-colorbox 1.6.1
+spin.js 2.3.1

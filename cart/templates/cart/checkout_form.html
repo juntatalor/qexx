@@ -1,0 +1,87 @@
+{% load mathfilters %}
+<form class="form-horizontal" method="post" action="{% url 'cart:checkout' %}">
+    {% csrf_token %}
+    {% comment %} Выбор метода доставки {% endcomment %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ form.shipment.label }}</h3>
+        </div>
+        <div class="panel-body">
+            <div class="radio">
+                {{ form.shipment }}
+            </div>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <td class="col-md-1"></td>
+            <td class="col-md-5"><strong>Общая стоимость:</strong></td>
+            <td class="col-md-4"></td>
+            <td class="col-md-2 text-right">
+                <strong>{{ cart_summary.total_price|floatformat:2 }} {{ cart.currency }}</strong></td>
+        </tr>
+        {% if cart_summary.discount %}
+            <tr>
+                <td class="col-md-1"></td>
+                <td class="col-md-5"><strong>Скидка:</strong></td>
+                <td class="col-md-4"></td>
+                <td class="col-md-2 text-right">
+                    <strong>{{ cart_summary.discount|floatformat:2 }} {{ cart.currency }}</strong></td>
+            </tr>
+            <tr>
+                <td class="col-md-1"></td>
+                <td class="col-md-5"><strong>Итоговая стоимость:</strong></td>
+                <td class="col-md-4"></td>
+                <td class="col-md-2 text-right">
+                    <strong>{{ cart_summary.final_price|floatformat:2 }} {{ cart.currency }}</strong></td>
+            </tr>
+        {% endif %}
+        </thead>
+    </table>
+
+    {%  comment %} Поля формы {% endcomment %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Контактная информация</h3>
+        </div>
+        <div class="panel-body">
+            <div class="radio">
+                {% for field in form.personal_data %}
+                    {% include 'cart/checkout_field.html' %}
+                {% endfor %}
+
+                {% for field in form.shipping_data %}
+                    {% include 'cart/checkout_field.html' %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% comment %} Выбор метода оплаты {% endcomment %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ form.payment.label }}</h3>
+        </div>
+        <div class="panel-body">
+            <div class="radio">
+                {{ form.payment }}
+            </div>
+        </div>
+    </div>
+
+    {% comment %} Регистрация {% endcomment %}
+    {% if not user.is_authenticated %}
+        <div class="checkbox">
+            <label>
+                {{ form.register }}
+                {{ form.register.label }}
+            </label>
+
+            <p class="help-block">Мы вышлем на ваш email регистрационные данные</p>
+        </div>
+    {% endif %}
+
+    <input type="submit" class="btn btn-success" value="Разместить заказ">
+</form>

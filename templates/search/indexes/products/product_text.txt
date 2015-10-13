@@ -1,0 +1,9 @@
+{{ object.product.name }}
+{{ object.product.description_short }}
+{{ object.product.description }}
+{{ object.product.description_full }}
+
+{% for category in object.product.categories.all %}
+    {{ category.name }}
+    {{ category.description }}
+{% endfor %}

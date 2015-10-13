@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+    Товары {{ block.super }}
+{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        {% if popular_products %}
+            <h3>Популярные товары</h3>
+            <p><a href="{% url 'products:popular' %}">больше популярных товаров <span class="fa fa-arrow-circle-o-right"></span></a></p>
+            {% include 'products/items_grid.html' with items=popular_products per_row=4 %}
+        {% endif %}
+        {% if new_products %}
+            <h3>Наши новинки</h3>
+            <p><a href="{% url 'products:new' %}">больше новинок <span class="fa fa-arrow-circle-o-right"></span></a></p>
+            {% include 'products/items_grid.html' with items=new_products per_row=4 %}
+        {% endif %}
+    </div>
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+    <script src="{% static "qexx/js/csrf.js" %}" type="text/javascript"></script>
+    <script src="{% static "cart/js/cart_add.js" %}" type="text/javascript"></script>
+{% endblock %}

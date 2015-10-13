@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load extra_pluralize %}
+{% load mathfilters %}
+{% block title %}
+    Заказы - {{ user }} {{ block.super }}
+{% endblock %}
+{% block content %}
+    <h4>Заказы</h4>
+    <table class="table">
+    <tbody>
+    {% for order in order_list %}
+        <tr>
+            <th>{{ forloop.counter }}</th>
+            <td><a href="{% url 'orders:direct_view' order.uid %}">{{ order }}</a></td>
+            <td>{{ order.amount_sum }} {% extra_pluralize товар товара товаров order.amount_sum %}</td>
+            <td class="text-right">{{ order.price_sum|add:order.shipping_price }} {{ order.currency }}</td>
+            <td>{{ order.get_order_status_display }}</td>
+            <td>{{ order.get_payment_status_display }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+{% endblock %}

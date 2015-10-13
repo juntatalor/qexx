@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load staticfiles %}
+
+{% block title %}
+    Регистрация {{ block.super }}
+{% endblock %}
+
+{% block content %}
+
+    <h4>Регистрация</h4>
+
+    {% for error in form.non_field_errors %}
+        <p class="text-danger">{{ error }}</p>
+    {% endfor %}
+
+    <form method="post" action="{% url 'accounts:signup' %}">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group{% if field.errors %} has-error{% endif %}{% if field.field.required %} required{% endif %}">
+                <label for="{{ field.id_for_label }}" class="control-label">{{ field.label }}</label>
+                {% render_field field class+="form-control" %}
+                {% for error in field.errors %}
+                    <span class="help-block">{{ error }}</span>
+                {% endfor %}
+                {% ifequal field.name 'username' %}
+                    {% if usernames %}
+                        <span class="help-block">
+                        Или просто выберите одно из этих:
+                        <div class="username_insert">
+                            {% for username in usernames %}
+                                <a href="#">{{ username }}</a>{% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                        </div>
+                        </span>
+                    {% endif %}
+                {% endifequal %}
+            </div>
+        {% endfor %}
+
+        <p class="text-primary">Вы можете не указывать логин и пароль - тогда мы придумаем их за вас и вышлем на
+            e-mail!</p>
+
+        <button type="submit" class="btn btn-default">Зарегистрироваться</button>
+
+    </form>
+
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script src="{% static "accounts/js/field_fill.js" %}" type="text/javascript"></script>
+{% endblock %}

@@ -1,0 +1,8 @@
+<form method="get" action="{% url 'search:haystack_search' %}">
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="Поиск" name="q">
+        <div class="input-group-btn">
+            <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+        </div>
+    </div>
+</form>

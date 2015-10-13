@@ -1,0 +1,21 @@
+<nav class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+            <span class="sr-only">Навигация</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li><a href="{% url 'products:index' %}"><span class="fa fa-home fa-lg"></span> Магазин</a></li>
+            <li><a href="{% url 'django.contrib.flatpages.views.flatpage' 'contacts/' %}"><span class="fa fa-phone fa-lg"></span> Контакты</a></li>
+            <li><a href="{% url 'django.contrib.flatpages.views.flatpage' 'shipping_and_payment/' %}"><span class="fa fa-paper-plane fa-lg"></span> Доставка и оплата</a></li>
+        </ul>
+        {% include 'accounts/account_bar.html' %}
+        <ul class="nav navbar-nav navbar-right">
+            <li id="cart-widget">{% include 'cart/cart_widget.html' %}</li>
+        </ul>
+    </div>
+</nav>

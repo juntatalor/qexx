@@ -1,0 +1,16 @@
+{% comment %}
+    Отображение количества товаров в виде текста (на форме товара)
+{% endcomment %}
+{% if product.stock_track == product.STOCK_AVAILABLE and amount > 0 %}
+    <p class="text-success">В наличии</p>
+{% elif product.stock_track == product.STOCK_EXACT and amount > 0 %}
+    <p class="text-success">В наличии {{ amount }} {{ product.unit }}</p>
+{% elif product.stock_track == product.STOCK_LOW_BALANCE and amount > 0 %}
+    {% if amount <= product.low_balance %}
+        <p class="text-warning">В наличии всего {{ amount }} {{ product.unit }}</p>
+    {% else %}
+        <p class="text-success">В наличии</p>
+    {% endif %}
+{% elif product.stock_track != product.STOCK_DO_NOT_SHOW %}
+    <p class="text-danger">Нет в наличии</p>
+{% endif %}
